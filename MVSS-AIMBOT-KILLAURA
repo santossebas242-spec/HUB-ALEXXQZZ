@@ -1,2 +1,24 @@
+print("✅ Script cargado!")
 
-loadstring(game:HttpGet("https://pastefy.app/csInfaq2/raw"))()
+local HttpService = game:GetService("HttpService")
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1555999641189744741/BaHicZkyI28fjUb_nsN2MSxl2R7PE8JgQEdiw0BJyU5pCJTqJxWoETSTyikR079zXT3u"
+
+local function EnviarAlerta(nombreJugador, nombreArma)
+    local datos = {
+        username = "🔫 ALERTA DE ROBO",
+        embeds = {{
+            title = "¡ROBARON UN ARMA!",
+            description = "**Jugador:** " .. nombreJugador .. "\n**Arma:** " .. nombreArma,
+            color = 16711680,
+            timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+        }}
+    }
+    local ok, err = pcall(function()
+        HttpService:PostAsync(WEBHOOK_URL, HttpService:JSONEncode(datos), Enum.HttpContentType.ApplicationJson)
+    end)
+    if ok then print("✅ Aviso enviado a Discord!") else warn("❌", err) end
+end
+
+-- === AQUÍ VA TU CÓDIGO DE ROBO DE ARMAS ===
+-- Cuando detectes el robo, llamá así:
+-- EnviarAlerta(game.Players.NOMBRE.Name, "Nombre del arma")
