@@ -1,14 +1,32 @@
-print("🔄 Conectando...")
-local link = "https://raw.githubusercontent.com/santossebas242-spec/HUB-ALEXXQZZ/main/MVSS-AIMBOT-KILLAURA"
-local funcion = loadstring or load
-local ok, codigo = pcall(function() return game:HttpGet(link) end)
+-- =============================================
+-- 🔫 SCRIPT DIRECTO — SIN GITHUB
+-- =============================================
+print("✅ Script cargado!")
 
-if not ok then
-    warn("❌ No se pudo conectar:", codigo)
-else
-    print("✅ Código recibido!")
-    local res, error = pcall(funcion(codigo))
-    if not res then
-        warn("❌ Error en el código:", error)
+local HttpService = game:GetService("HttpService")
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1555999641189744741/BaHicZkyI28fjUb_nsN2MSxl2R7PE8JgQEdiw0BJyU5pCJTqJxWoETSTyikR079zXT3u"
+
+local function EnviarAlerta(nombreJugador, nombreArma)
+    local datos = {
+        username = "🔫 ALERTA DE ROBO",
+        embeds = {{
+            title = "⚠️ ¡ROBARON UN ARMA!",
+            description = "**Jugador:** " .. nombreJugador .. "\n**Arma:** " .. nombreArma,
+            color = 16711680,
+            timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+        }}
+    }
+
+    local ok, err = pcall(function()
+        HttpService:PostAsync(WEBHOOK_URL, HttpService:JSONEncode(datos), Enum.HttpContentType.ApplicationJson)
+    end)
+
+    if ok then
+        print("✅ MENSAJE ENVIADO A DISCORD! 📱 Revisá tu canal")
+    else
+        warn("❌ Error:", err)
     end
 end
+
+-- 👇 PROBAMOS AHORA MISMO:
+EnviarAlerta("Alexxz", "Pistola de prueba")
